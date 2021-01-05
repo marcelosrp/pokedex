@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import * as S from "./styles";
 
-function PokemonCard({ pokemonName, pokemonNumber }) {
+function PokemonCard({ pokemonName, pokemonNumber, pokemonType }) {
   const imgURL = `https://pokeres.bastionbot.org/images/pokemon/${pokemonNumber}.png`;
   return (
     <S.Card>
@@ -14,6 +14,7 @@ function PokemonCard({ pokemonName, pokemonNumber }) {
         #{pokemonNumber.toString().padStart(3, "0")}
       </S.PokemonNumber>
       <S.PokemonName>{pokemonName}</S.PokemonName>
+      <S.PokemonType>Type: {pokemonType}</S.PokemonType>
     </S.Card>
   );
 }
@@ -21,6 +22,7 @@ function PokemonCard({ pokemonName, pokemonNumber }) {
 PokemonCard.propTypes = {
   pokemonName: PropTypes.string.isRequired,
   pokemonNumber: PropTypes.number.isRequired,
+  pokemonType: PropTypes.string.isRequired,
 };
 
 export default PokemonCard;

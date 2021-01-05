@@ -1,58 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import Layout from "../../components/Layout";
 import PokemonCard from "../../components/PokemonCard";
+import Skeleton from "../../components/Skeleton";
 
 const Home = () => {
-  const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoadig] = useState(false);
-  const [hasError, setHasError] = useState("");
+  const [pokemons, setPokemons] = useState([]);
+
+  const getPokemonURL = (id) => `https://pokeapi.co/api/v2/pokemon/${id}`;
+
+  const generatePokemonPromises = useCallback(() => {
+    return Array(150)
+      .fill()
+      .map((_, index) =>
+        fetch(getPokemonURL(index + 1)).then((response) => response.json())
+      );
+  }, []);
+
+  const fetchPokemon = useCallback(() => {
+    const pokemonPromises = generatePokemonPromises();
+
+    Promise.all(pokemonPromises).then((pokemons) => {
+      setPokemons(pokemons);
+      setIsLoadig(false);
+    });
+  }, [generatePokemonPromises]);
 
   useEffect(() => {
-    async function getPokemons() {
-      try {
-        setIsLoadig(true);
+    setIsLoadig(true);
 
-        const url = `https://pokeapi.co/api/v2/pokedex/2`;
-        const response = await fetch(url);
-
-        if (!response.ok)
-          throw new Error("Um erro foi encontrado, tente novamente");
-
-        if (response.status === 200) {
-          const data = await response.json();
-          setPokemons(data.pokemon_entries);
-          setIsLoadig(false);
-        } else {
-          throw new Error("Um erro foi encontrado, tente novamente");
-        }
-      } catch (error) {
-        setHasError(error);
-      }
-    }
-
-    getPokemons();
-  }, []);
+    fetchPokemon();
+  }, [fetchPokemon]);
 
   return (
     <Layout>
-      {isLoading && <h1>Carregando...</h1>}
-      {hasError && <h1>{hasError}</h1>}
       <section className="listPokemonsContainer">
-        {pokemons.map((pokemon) => {
-          const {
-            entry_number,
-            pokemon_species: { name },
-          } = pokemon;
-
-          return (
-            <PokemonCard
-              key={entry_number}
-              pokemonName={name}
-              pokemonNumber={entry_number}
-            />
-          );
-        })}
+        {isLoading
+          ? Array(18)
+              .fill()
+              .map((_, idx) => {
+                return <Skeleton key={idx} />;
+              })
+          : pokemons &&
+            pokemons.map((pokemon) => {
+              return (
+                <PokemonCard
+                  key={pokemon.id}
+                  pokemonName={pokemon.name}
+                  pokemonNumber={pokemon.id}
+                  pokemonType={pokemon.types[0].type.name}
+                />
+              );
+            })}
       </section>
     </Layout>
   );

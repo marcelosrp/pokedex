@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Card = styled.main`
+export const Card = styled.div`
   background-color: #eee;
   border-radius: 10px;
   box-shadow: 0 3px 15px rgba(100, 100, 100, 0.5);
@@ -36,4 +36,9 @@ export const PokemonName = styled.h3`
   letter-spacing: 1px;
   margin: 15px 0 7px;
   text-transform: capitalize;
+`;
+
+export const PokemonType = styled.h3`
+  font-size: 13px;
+  font-weight: 400;
 `;
