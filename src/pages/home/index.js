@@ -29,30 +29,27 @@ const Home = () => {
 
   useEffect(() => {
     setIsLoadig(true);
-
     fetchPokemon();
   }, [fetchPokemon]);
 
   return (
     <Layout>
       <section className="listPokemonsContainer">
-        {isLoading
-          ? Array(18)
-              .fill()
-              .map((_, idx) => {
-                return <Skeleton key={idx} />;
-              })
-          : pokemons &&
-            pokemons.map((pokemon) => {
-              return (
-                <PokemonCard
-                  key={pokemon.id}
-                  pokemonName={pokemon.name}
-                  pokemonNumber={pokemon.id}
-                  pokemonType={pokemon.types[0].type.name}
-                />
-              );
-            })}
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          pokemons &&
+          pokemons.map((pokemon) => {
+            return (
+              <PokemonCard
+                key={pokemon.id}
+                pokemonName={pokemon.name}
+                pokemonNumber={pokemon.id}
+                pokemonType={pokemon.types[0].type.name}
+              />
+            );
+          })
+        )}
       </section>
     </Layout>
   );

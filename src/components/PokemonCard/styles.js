@@ -8,7 +8,12 @@ export const Card = styled.div`
   margin: 10px;
   padding: 20px;
   text-align: center;
+  transition: transform 0.3s ease;
   width: 160px;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 export const ThumbWrap = styled.div`

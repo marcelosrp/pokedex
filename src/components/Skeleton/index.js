@@ -2,14 +2,18 @@ import React from "react";
 import * as S from "./styles";
 
 const Skeleton = () => {
-  return (
-    <S.SkeletonWrapper>
-      <S.SkeletonThumb />
-      <S.SkeletonNumber />
-      <S.SkeletonName />
-      <S.SkeletonType />
-    </S.SkeletonWrapper>
-  );
+  return Array(18)
+    .fill()
+    .map((_, index) => {
+      return (
+        <S.SkeletonWrapper key={index}>
+          <S.SkeletonThumb />
+          <S.SkeletonNumber />
+          <S.SkeletonName />
+          <S.SkeletonType />
+        </S.SkeletonWrapper>
+      );
+    });
 };
 
 export default Skeleton;
